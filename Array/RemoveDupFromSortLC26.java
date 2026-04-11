@@ -16,7 +16,7 @@ public class RemoveDupFromSortLC26 {
     nums[k++] = nums[nums.length - 1];
 
     return k;
-
+//CHangs
     }
 
     public static void main(String[] args) {
