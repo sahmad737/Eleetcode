@@ -14,18 +14,19 @@ Output: false
 
 import java.util.HashSet;
 
-public class containDuplicatesIILC219 {
-        public boolean containsNearbyDuplicateBF(int[] nums, int k) { //TLE
-        for (int i = 0; i < nums.length; i++) {
-          for (int j = i+1 ; j < nums.length; j++) {
-              if (nums[i]==nums[j] && Math.abs((i-j))<=k) {System.out.println("i= "+i+ " j= "+j); return true; 
+// public class containDuplicatesIILC219 {
+//         public boolean containsNearbyDuplicateBF(int[] nums, int k) { //TLE
+//         for (int i = 0; i < nums.length; i++) {
+//           for (int j = i+1 ; j < nums.length; j++) {
+//               if (nums[i]==nums[j] && Math.abs((i-j))<=k) {System.out.println("i= "+i+ " j= "+j); return true; 
                 
-              }
-          }
-        }
-        return false;
-    }
+//               }
+//           }
+//         }
+//         return false;
+//     }
 
+    //This is sliding window appraoch kinda where we are checking for range and in num
     public boolean containsNearbyDuplicate(int[] nums,int k){
 
  HashSet<Integer> set = new HashSet<>();
