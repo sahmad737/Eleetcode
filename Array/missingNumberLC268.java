@@ -28,6 +28,18 @@ int n = nums.length;
     }
     return -1;
 
+
+    /*
+Arrays.sort(nums);
+
+for (int i = 0; i < nums.length; i++) {
+    if (nums[i] != i) {
+        return i;
+    }
+}
+return nums.length; this was where i was lacking. 
+ */
+
     }
 
 
