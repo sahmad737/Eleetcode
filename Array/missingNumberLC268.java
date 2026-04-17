@@ -55,6 +55,23 @@ public static int missingNumber1(int[] nums){
 
     return expected - actual;
 
+    //This is also 1ms  here we are adding F at missing and then iterating it 
+    /*public static int missingNumber(int[] nums) {
+    int n = nums.length;
+    boolean[] seen = new boolean[n + 1];
+
+    for (int num : nums) {
+        seen[num] = true;
+    }
+
+    for (int i = 0; i <= n; i++) {
+        if (!seen[i]) {
+            return i;
+        }
+    }
+    return -1;
+} */
+
 }
 public static void main(String[] args) {
     // int a[] = {3,0,1};
