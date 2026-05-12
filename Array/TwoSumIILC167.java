@@ -20,7 +20,7 @@ public class TwoSumIILC167 {
         int i,j;
         i=0;j=numbers.length-1;
 
-        while(j>=i){
+        while(j>i){ //Removed as here it is guaranteed but not always so avoid checking
             if (numbers[i]+numbers[j]==target) {
                 return new int[]{i+1,j+1};
             }
