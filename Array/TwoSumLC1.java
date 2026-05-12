@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class TwoSumLC1 {
         public int[] twoSum(int[] nums,int target){
-
+// {2,7,11,15} 
 Map<Integer, Integer> idx = new HashMap<>(nums.length * 2);
     for (int i = 0; i < nums.length; i++) {
         int need = target - nums[i];
