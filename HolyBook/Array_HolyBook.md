@@ -81,6 +81,49 @@ Use these tags consistently in all files and in your solution files.
 
 ---
 
+### [LC 344] Reverse String
+**Status:** ✅ Done | 12-May-2026 | **Revisit: No**
+**Pattern:** P4 — Two Pointers, opposite ends
+**Difficulty:** Easy | [Problem](http://lcid.cc/344)
+
+**Problem:** Reverse a char array in-place. O(1) extra memory.
+
+**My Approach**
+- Knew it was Two Pointers. `i=0, j=end`. Swap `s[i]` and `s[j]` using `temp`, move both inward until `i < j`.
+
+**Optimal:** TIME: O(n) SPACE: O(1) ✅
+
+**Why It Works (say this out loud!)**
+- Reversing is symmetric — position 0 swaps with n-1, position 1 with n-2, and so on
+- Two pointers do this in one pass without making a copy
+- When pointers meet or cross, every element has been swapped exactly once
+
+**What I Thought vs What I Should Have Used**
+- Identified Two Pointers immediately ✅
+- Weakness: wrote `//Swapping easily the two` — that's the WHAT, not the WHY
+- Train the habit: always write WHY it works, not just what you did
+
+**Bonus Trick — Swap Without `temp` (XOR swap)**
+```java
+s[i] ^= s[j];   // s[i] = s[i] XOR s[j]
+s[j] ^= s[i];   // s[j] = original s[i]
+s[i] ^= s[j];   // s[i] = original s[j]
+```
+- Eliminates the temp variable entirely
+- Interviewers sometimes ask: *"can you swap without a third variable?"* — this is the answer
+- `temp` is fine in practice; know this for follow-ups
+
+**`i < j` not `i <= j`** — correct boundary this time ✅ (unlike LC167 where you had `j >= i`)
+
+**Edge Cases**
+- Single character — `i < j` is false immediately, no swap, correct
+- Even vs odd length — both work, middle element in odd length never gets touched (correct)
+- Empty array — loop never runs
+
+**Asked In:** Amazon, Microsoft, Apple (classic warm-up)
+
+---
+
 ### [LC 167] Two Sum II — Sorted Array
 **Status:** ✅ Done | 12-May-2026 | **Revisit: Yes**
 **Pattern:** P4 — Two Pointers, both ends
@@ -508,7 +551,7 @@ for (int i = 0; i < n; i++) {
 | ✅ | LC26 Remove Dups (Sorted) | 13-Apr-2026 | Revisit: swap→write |
 | ✅ | LC283 Move Zeroes | 15-Apr-2026 | — |
 | ✅ | LC167 Two Sum II | 12-May-2026 | Revisit: sorted→extremes→steer |
-| ⬜ | LC344 Reverse String | — | Two Pointers |
+| ✅ | LC344 Reverse String | 12-May-2026 | No revisit — write WHY not just WHAT |
 | ⬜ | LC125 Valid Palindrome | — | Two Pointers |
 | ⬜ | LC15 3Sum | — | Sort + Two Pointers (harder) |
 | ✅ | LC219 Contains Dup II | 15-Apr-2026 | Revisit: window eviction |
@@ -534,5 +577,5 @@ for (int i = 0; i < n; i++) {
 
 ---
 
-*Last updated: 2026-05-12 | Problems logged: 14 | Next: LC344 Reverse String*
+*Last updated: 2026-05-12 | Problems logged: 15 | Next: LC125 Valid Palindrome*
 *Companion files: `General_HolyBook.md` · `Array_Interview.md`*
