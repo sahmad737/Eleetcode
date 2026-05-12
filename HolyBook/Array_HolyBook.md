@@ -81,6 +81,118 @@ Use these tags consistently in all files and in your solution files.
 
 ---
 
+### [LC 125] Valid Palindrome
+**Status:** ✅ Done | 12-May-2026 | **Revisit: Yes**
+**Pattern:** P4 — Two Pointers, opposite ends + in-loop skip
+**Difficulty:** Medium | [Problem](http://lcid.cc/125)
+
+**Problem:** Check if a string is a palindrome after removing non-alphanumeric characters and lowercasing.
+
+---
+
+**My Approach (first attempt)**
+- Cleaned string first using `replaceAll("[^a-zA-Z0-9]", "").toLowerCase()`
+- Then Two Pointed on the clean string
+- TIME: O(n) SPACE: O(n) — new string created
+
+**What was wrong with my first regex:**
+- Originally wrote `[\\s,\\p{Punct}]` — removes whitespace + punctuation
+- Should be `[^a-zA-Z0-9]` — removes anything that is NOT alphanumeric
+- The `^` inside `[]` means NOT. Always think: *what do I want to KEEP*, not *what do I want to remove*
+
+**Optimal Approach — Skip-Junk Two Pointers**
+```java
+int i = 0, j = s.length() - 1;
+while (i < j) {
+    while (i < j && !Character.isLetterOrDigit(s.charAt(i))) i++;  // skip junk left
+    while (i < j && !Character.isLetterOrDigit(s.charAt(j))) j--;  // skip junk right
+    if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(j)))
+        return false;
+    i++; j--;
+}
+return true;
+```
+**TIME: O(n) SPACE: O(1)** — no new string, just pointers skipping over junk
+
+---
+
+**The Key Mental Shift — How I Should Have Thought**
+
+I asked: *"How do I remove junk?"* → led to creating a new string
+
+Should have asked: *"Do I need to REMOVE junk, or can I just SKIP it?"*
+→ Pointer is already moving. Just add a condition: move further if junk. No extra space needed.
+
+---
+
+**Dry Run — `"A,b,a"` (true)**
+```
+Index:  0   1   2   3   4
+Char:  'A' ',' 'b' ',' 'a'
+        i                j
+
+Round 1: i=0, j=4
+  skip left:  'A' is alphanumeric → i stays 0
+  skip right: 'a' is alphanumeric → j stays 4
+  compare: toLowerCase('A')='a' == 'a' ✓
+  i++→1, j--→3
+
+Round 2: i=1, j=3
+  skip left:  ',' is junk → i++ → i=2, 'b' is ok → stop
+  skip right: ',' is junk → j-- → j=2, 'b' is ok → stop
+  now i=2, j=2 → i<j is FALSE → inner while stops
+  compare: 'b' == 'b' ✓
+  i++→3, j--→1
+
+Round 3: outer while i<j → 3<1 FALSE → exit
+return true ✓
+```
+
+**Dry Run — `"race a car"` (false)**
+```
+Round 4: i=3('e'), j=6(' ')
+  skip left:  'e' is alphanumeric → i stays 3
+  skip right: ' ' is junk → j-- → j=5, 'a' is ok → stop
+  compare: 'e' != 'a' → return false ✓
+```
+
+---
+
+**Why `i < j` is inside the inner while too**
+- Without it: input `",,"` (all junk) → `i` flies past `j` past end of string → crash
+- The guard stops the skip from overshooting when pointers meet
+
+**Why it's `!Character.isLetterOrDigit()` not a regex**
+- `isLetterOrDigit(c)` returns true for a-z, A-Z, 0-9 — exactly "alphanumeric"
+- No new string created, works directly on the original characters
+
+---
+
+**What I Thought vs What I Should Have Used**
+- First thought: "prepare the data (clean string), then apply pattern"
+- Should think: "apply the pattern, teach the pointer to handle the data"
+- The skip is just a nested `while` that runs the pointer until it lands on a valid character
+- This pattern repeats everywhere: skip spaces, skip duplicates, skip non-alphanumeric — same skeleton
+
+**The Skip Pattern (memorise this):**
+```
+Skip spaces          →  while s[i] == ' '
+Skip duplicates      →  while s[i] == s[i-1]
+Skip non-alphanumeric → while !isLetterOrDigit(s[i])
+```
+
+**Edge Cases**
+- `" "` (space only) → both pointers skip, `i<j` becomes false, return true ✓
+- Empty string → outer while never runs, return true ✓
+- All junk `",,"` → inner while guard `i<j` prevents crash ✓
+- Single character → `i<j` is false immediately ✓
+
+> **Revisit Needed:** Think SKIP not CLEAN when handling junk characters. Also remember regex `[^...]` = NOT. Trace the inner while guard on all-junk input.
+
+**Asked In:** Facebook, Microsoft, Amazon (string + Two Pointer combo)
+
+---
+
 ### [LC 344] Reverse String
 **Status:** ✅ Done | 12-May-2026 | **Revisit: No**
 **Pattern:** P4 — Two Pointers, opposite ends
@@ -552,7 +664,7 @@ for (int i = 0; i < n; i++) {
 | ✅ | LC283 Move Zeroes | 15-Apr-2026 | — |
 | ✅ | LC167 Two Sum II | 12-May-2026 | Revisit: sorted→extremes→steer |
 | ✅ | LC344 Reverse String | 12-May-2026 | No revisit — write WHY not just WHAT |
-| ⬜ | LC125 Valid Palindrome | — | Two Pointers |
+| ✅ | LC125 Valid Palindrome | 12-May-2026 | Revisit: think SKIP not CLEAN. Inner while guard. |
 | ⬜ | LC15 3Sum | — | Sort + Two Pointers (harder) |
 | ✅ | LC219 Contains Dup II | 15-Apr-2026 | Revisit: window eviction |
 | ⬜ | LC643 Max Average Subarray I | — | Fixed sliding window |
@@ -577,5 +689,5 @@ for (int i = 0; i < n; i++) {
 
 ---
 
-*Last updated: 2026-05-12 | Problems logged: 15 | Next: LC125 Valid Palindrome*
+*Last updated: 2026-05-12 | Problems logged: 16 | Next: LC15 3Sum*
 *Companion files: `General_HolyBook.md` · `Array_Interview.md`*
