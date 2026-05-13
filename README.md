@@ -9,8 +9,6 @@ Eleetcode/
 │   ├── General_HolyBook.md   ← Universal patterns, complexity, tradeoffs
 │   ├── Array_HolyBook.md     ← Array-specific patterns + all problem logs
 │   └── Array_Interview.md    ← Interview Q&A, follow-ups, company notes
-├── Resource/
-│   └── DSA_Journey_Tracker.csv  ← Source of truth for all solved problems
 └── README.md
 ```
 
