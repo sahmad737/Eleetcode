@@ -1,82 +1,53 @@
-# Sameer's DSA Learning System
+# Sameer's DSA Journey
 
-## How This Repo Works
+## Structure
 
 ```
 Eleetcode/
-├── Array/              ← Java solution files
-├── HolyBook/           ← Pattern reference & brain dump  ← READ BEFORE SOLVING
-│   └── Array_HolyBook.java
+├── Array/              ← Java solution files (one file per problem)
+├── HolyBook/           ← All reference material — read these, not this file
+│   ├── General_HolyBook.md   ← Universal patterns, complexity, tradeoffs
+│   ├── Array_HolyBook.md     ← Array-specific patterns + all problem logs
+│   └── Array_Interview.md    ← Interview Q&A, follow-ups, company notes
+├── Resource/
+│   └── DSA_Journey_Tracker.csv  ← Source of truth for all solved problems
 └── README.md
 ```
 
 ---
 
-## Workflow For Every New Problem
+## Workflow
 
 ```
-1. READ   → Understand the problem. Identify: sorted? range [1..n]? window?
-2. THINK  → Open Array_HolyBook.java. Match to a pattern in Section 1.
-3. CODE   → Implement. Don't look at solutions yet.
-4. LOG    → Add a block to the HolyBook with your tags (see below).
-5. REVIEW → If you struggled, mark //Revisit Needed -- REASON.
+1. READ    → Understand problem. Note: sorted? range [1..n]? window?
+2. MATCH   → Open Array_HolyBook.md Section 1. Find the signal → pattern.
+3. CODE    → Implement without looking at solutions.
+4. ANALYZE → Compare your complexity vs optimal. Note what you missed.
+5. SYNC    → Update HolyBook + Tracker after every problem.
 ```
 
 ---
 
-## Comment Tags (use in EVERY solution file)
+## Where Is Everything?
 
-| Tag | When to use |
-|-----|-------------|
-| `//My Approach` | What you first coded |
-| `//Optimal` | Best known: TIME O(?) SPACE O(?) |
-| `//Pattern` | Pattern name from HolyBook Section 1 |
-| `//Trick` | The single key insight |
-| `//Revisit Needed -- REASON` | You got stuck or used the wrong pattern |
-| `//What I Thought vs What I Should Have Used` | Pattern mismatch log |
-| `//Edge Cases` | Inputs that can break your code |
-| `//Asked In` | Company / round (fill from LC discussions) |
-
----
-
-## Your Current Progress Snapshot (2026-05-12)
-
-| Problem | Status | Pattern Used | Optimal Pattern |
-|---------|--------|-------------|----------------|
-| LC1  Two Sum | ✅ Optimal | HashMap | HashMap |
-| LC167 Two Sum II | ⬜ Unsolved | — | **Two Pointers** ← DO THIS NEXT |
-| LC217 Contains Duplicates | ✅ Optimal | HashSet | HashSet |
-| LC219 Contains Duplicates II | ✅ Optimal | Sliding Window | Sliding Window |
-| LC169 Majority Element | ⚠️ Suboptimal | Sort / HashMap | **Boyer-Moore** |
-| LC283 Move Zeroes | ✅ Optimal | Write Pointer | Write Pointer |
-| LC268 Missing Number | ✅ Optimal | Gauss Formula | Gauss / XOR |
-| LC448 Find Disappeared Numbers | ⚠️ Suboptimal | HashSet / boolean[] | **In-Place Negation** |
-| LC136 Single Number | 📝 Log needed | — | XOR |
-| LC485 Max Consecutive Ones | 📝 Log needed | — | Counter |
-| LC26 Remove Dups Sorted | 📝 Log needed | — | Two Pointers |
-| LC27 Remove Element | 📝 Log needed | — | Write Pointer |
-| LC66 Plus One | 📝 Log needed | — | Carry Propagation |
-
----
-
-## Honest Assessment
-
-**Strong at:** HashMap / HashSet — you reach for the right O(n) tool fast.
-
-**Gap:** You default to HashSet even when O(1) space is possible.
-Rule: **sorted array → Two Pointers first. Range [1..n] values → In-Place Negation.**
-
-**Next milestone:** Solve LC167 with Two Pointers (no HashMap). Then re-solve LC169 with Boyer-Moore (no sort).
+| What you need | Where to look |
+|---|---|
+| n-size → time ceiling | `General_HolyBook.md` Section 2 |
+| Space vs time tradeoff | `General_HolyBook.md` Section 3 |
+| Pattern glossary | `Array_HolyBook.md` Section 1 |
+| All solved problems + notes | `Array_HolyBook.md` Section 2 |
+| Interview Q&A | `Array_Interview.md` |
+| Progress tracker | `Resource/DSA_Journey_Tracker.csv` |
 
 ---
 
 ## Topics Roadmap
 
-- [x] `Array_HolyBook.java` — started
-- [ ] `LinkedList_HolyBook.java` — next after arrays
-- [ ] `String_HolyBook.java`
-- [ ] `BinarySearch_HolyBook.java`
-- [ ] `Stack_Queue_HolyBook.java`
-- [ ] `Tree_HolyBook.java`
-- [ ] `Graph_HolyBook.java`
-- [ ] `DP_HolyBook.java`
+- [x] Array
+- [ ] String
+- [ ] LinkedList
+- [ ] Binary Search
+- [ ] Stack / Queue
+- [ ] Tree
+- [ ] Graph
+- [ ] Dynamic Programming

@@ -81,6 +81,69 @@ Use these tags consistently in all files and in your solution files.
 
 ---
 
+### [LC 977] Squares of a Sorted Array
+**Status:** ✅ Done | 14-May-2026 | **Revisit: Yes**
+**Pattern:** P4 — Two Pointers (opposite ends, fill output from back)
+**Difficulty:** Easy | [Problem](http://lcid.cc/977)
+
+**Problem:** Given a sorted (non-decreasing) integer array, return the squares of each number also sorted.
+
+**My Approach — Square then Sort**
+```java
+for (int i = 0; i < nums.length; i++) nums[i] = nums[i] * nums[i];
+Arrays.sort(nums);
+return nums;
+```
+TIME: O(n log n) | SPACE: O(1) in-place (but mutates input)
+
+**What I Missed:** The word **“sorted”** is the signal — Two Pointers. I threw away sorted-order info by re-sorting after squaring.
+
+**Optimal — Two Pointers, Fill from Back**
+```java
+public static int[] sortedSquaresOptimal(int[] nums) {
+    int n = nums.length;
+    int[] result = new int[n];
+    int left = 0, right = n - 1;
+    int pos = n - 1;   // fill largest-first from the back
+    while (left <= right) {
+        int lsq = nums[left] * nums[left];
+        int rsq = nums[right] * nums[right];
+        if (lsq > rsq) { result[pos--] = lsq; left++;  }
+        else            { result[pos--] = rsq; right--; }
+    }
+    return result;
+}
+```
+TIME: O(n) | SPACE: O(n) — result array is mandatory output, not extra cost
+
+**WHY it works:** The original array is sorted → after squaring, the largest value is always at one of the two ends (either most-negative or most-positive). Compare both extremes, place the winner at the back of result, shrink that pointer inward. One pass, no sort needed.
+
+**Dry Run — `[-4,-1,0,3,10]`**
+```
+left=0(-4) right=4(10)  16 vs 100  → result[4]=100  right=3
+left=0(-4) right=3( 3)  16 vs  9   → result[3]=16   left=1
+left=1(-1) right=3( 3)   1 vs  9   → result[2]=9    right=2
+left=1(-1) right=2( 0)   1 vs  0   → result[1]=1    left=2
+left=2( 0) right=2( 0)   0 vs  0   → result[0]=0    right=1
+result = [0, 1, 9, 16, 100] ✓
+```
+
+**Space-Time Tradeoff Lesson**
+- My approach: O(1) space but O(n log n) time — pays no space, wastes time re-sorting
+- Optimal: O(n) space (the result[]) but O(n) time — result[] is mandatory output anyway, so no real extra cost
+- Rule: if you *must* return a new array, O(n) space is already spent — use it to avoid a re-sort
+
+**What I Should Have Thought**
+1. See “sorted” → fire Two Pointers signal
+2. Ask: where do largest squares live? → at the extremes (most-negative or most-positive)
+3. Fill output from back using two-pointer comparison at both ends
+
+> **Revisit Needed:** “sorted” = Two Pointer signal. Largest squares at extremes. Fill output back-to-front. Know the space tradeoff explanation.
+
+**Asked In:** Amazon, Microsoft, Google (common warm-up)
+
+---
+
 ### [LC 392] Is Subsequence
 **Status:** ✅ Done | 13-May-2026 | **Revisit: Yes**
 **Pattern:** P4 — Two Pointers across two strings (slow needle + fast haystack)
@@ -745,8 +808,7 @@ for (int i = 0; i < n; i++) {
 | ✅ | LC167 Two Sum II | 12-May-2026 | Revisit: sorted→extremes→steer |
 | ✅ | LC344 Reverse String | 12-May-2026 | No revisit — write WHY not just WHAT |
 | ✅ | LC125 Valid Palindrome | 12-May-2026 | Revisit: think SKIP not CLEAN. Inner while guard. |
-| ✅ | LC392 Is Subsequence | 13-May-2026 | Revisit: label pointers before coding. Know binary search follow-up. |
-| ⬜ | LC15 3Sum | — | Sort + Two Pointers (harder) |
+| ✅ | LC392 Is Subsequence | 13-May-2026 | Revisit: label pointers before coding. Know binary search follow-up. || ✅ | LC977 Squares of Sorted Array | 14-May-2026 | Revisit: sorted=Two Pointers. Fill back-to-front. Know space tradeoff. || ⬜ | LC15 3Sum | — | Sort + Two Pointers (harder) |
 | ✅ | LC219 Contains Dup II | 15-Apr-2026 | Revisit: window eviction |
 | ⬜ | LC643 Max Average Subarray I | — | Fixed sliding window |
 | ⬜ | LC3 Longest Substr No Repeat | — | Variable sliding window |
@@ -770,5 +832,5 @@ for (int i = 0; i < n; i++) {
 
 ---
 
-*Last updated: 2026-05-13 | Problems logged: 17 | Next: LC15 3Sum*
+*Last updated: 2026-05-14 | Problems logged: 18 | Next: LC15 3Sum*
 *Companion files: `General_HolyBook.md` · `Array_Interview.md`*

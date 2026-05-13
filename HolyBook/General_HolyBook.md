@@ -135,6 +135,52 @@ O(n² + n)  →  O(n²)   ← n² dominates
 
 ---
 
+### The Space-Time Tradeoff — When to Sacrifice Which
+
+**Rule 1 — Read the problem constraints first**
+
+| Constraint in problem | What to sacrifice |
+|---|---|
+| "Do it in-place" / "O(1) extra space" | Must sacrifice time if needed |
+| "O(n) time" / no space restriction | Pay O(n) space freely |
+| No constraint mentioned | Default: optimize time, pay space |
+
+**Rule 2 — The "must return new structure" exception**
+
+If the problem *forces* you to return a new array or list, that output is O(n) no matter what.
+You are already paying O(n) space just for the answer — the extra space isn't a cost, it's mandatory.
+Use it: store intermediate results in the output array and avoid a re-sort or second pass.
+
+> Example: LC977 Squares of Sorted Array — result[] is required output, not extra.
+> Paying O(n) for it gets you O(n) time. Not paying = O(n log n) for re-sort. Wrong tradeoff.
+
+**Rule 3 — Decision flowchart**
+
+```
+Is O(1) space required? ("in-place", "O(1) extra")
+  YES → accept worse time; use index tricks, pointer tricks
+  NO  → ask: does paying O(n) space buy me better time?
+          YES → pay it
+          NO  → save space, no benefit to spending it
+```
+
+**Rule 4 — Common space-for-time trades**
+
+| Pay this space | To get this time gain | Example |
+|---|---|---|
+| O(n) HashMap | O(n²) → O(n) lookup | Two Sum LC1 |
+| O(n) result array | O(n log n) → O(n) | Squares LC977 |
+| O(n) prefix sum array | O(n) build → O(1) per range query | LC303, LC560 |
+| O(k) HashSet window | O(n²) → O(n) sliding window | LC219 |
+
+**Rule 5 — Default stance for interviews**
+
+Unless the problem says otherwise: **optimize time first, explain the space cost**.
+Then offer: *"If space is a concern, I can do it in O(1) space at the cost of O(n log n) time."*
+Showing you know both directions impresses interviewers more than picking one silently.
+
+---
+
 ## Section 4 — Data Structures: When to Use What
 
 | Structure | Use when |
@@ -232,5 +278,5 @@ Always say **without being asked**:
 
 ---
 
-*Last updated: 2026-05-12*
+*Last updated: 2026-05-14*
 *Files: `General_HolyBook.md` · `Array_HolyBook.md` · `Array_Interview.md`*
