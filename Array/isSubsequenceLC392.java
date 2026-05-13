@@ -36,15 +36,16 @@ public class isSubsequenceLC392 {
     /*
     Cleaner version
     public static boolean isSubsequence(String s, String t) {
-    int k = 0;
-    for (int i = 0; i < t.length(); i++) {
-        if (t.charAt(i) == s.charAt(k)) {
-            k++;
-            if (k == s.length()) return true;  // found all chars
+        if (s.isEmpty()) return true;   // s.charAt(k) crashes if s="" — guard first
+        int k = 0;
+        for (int i = 0; i < t.length(); i++) {
+            if (t.charAt(i) == s.charAt(k)) {
+                k++;
+                if (k == s.length()) return true;  // found all chars
+            }
         }
-    }
-    return k == s.length();  // handles empty s too — no special case needed
-} */
+        return false;
+    } */
     public static void main(String[] args) {
 
         System.out.println(isSubsequence("abc", "ahcgdb")?"Subsequence":"Not Subsequence");

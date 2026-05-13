@@ -104,9 +104,10 @@ All characters of `s` must appear in `t` in the same left-to-right order (not ne
 
 The first bug caused `s` to always match itself — the code returned `true` for any `t`. It worked for `"ahbgdc"` only by accident (answer happens to be true).
 
-**Cleaner Version (no temp variable, no empty guard needed)**
+**Cleaner Version**
 ```java
 public static boolean isSubsequence(String s, String t) {
+    if (s.isEmpty()) return true;   // s.charAt(k) crashes when s="" — guard needed
     int k = 0;
     for (int i = 0; i < t.length(); i++) {
         if (t.charAt(i) == s.charAt(k)) {
@@ -114,7 +115,7 @@ public static boolean isSubsequence(String s, String t) {
             if (k == s.length()) return true;
         }
     }
-    return k == s.length();  // handles empty s: 0==0 → true
+    return false;
 }
 ```
 
