@@ -353,6 +353,102 @@
      Show Gauss or XOR to impress.
 */
 
+// ─── Q11 ─────────────────────────────────────────────────────────────────────
+/*
+  Q: Given two strings s and t, check if s is a subsequence of t.
+     The characters of s must appear in t in order, but not necessarily contiguous.
+     Can you do it in O(n) time and O(1) space?
+
+  THINK FIRST ↓
+  .
+  .
+  .
+  A: Two Pointers across two strings (P4 variant C — two cursors, two strings).
+
+     int k = 0;   // cursor for s (the needle) — moves only on a match
+     for (int i = 0; i < t.length(); i++) {     // cursor for t (haystack)
+         if (t.charAt(i) == s.charAt(k)) {
+             k++;
+             if (k == s.length()) return true;
+         }
+     }
+     return k == s.length();   // handles s="" edge case: 0==0 → true
+
+     Mental model:
+       i = fast scanner through t — always moves
+       k = slow needle tracker through s — only advances on a match
+     When k reaches s.length() all characters of s found in order → true.
+
+     TIME: O(n) where n = t.length()    SPACE: O(1)
+
+     Common bug: writing s.charAt(i) instead of t.charAt(i).
+     i is the haystack cursor — it must index t, not s.
+     Always label your pointers: "i indexes t, k indexes s."
+
+     Empty s edge case: no explicit guard needed. k starts at 0, s.length() = 0,
+     so k == s.length() is true before the loop via the final return.
+*/
+
+// ─── Q11 Follow-Up ───────────────────────────────────────────────────────────
+/*
+  Q: What if there are 10^9 different s strings to check against the SAME t?
+     Is O(n) per query still acceptable?
+
+  THINK FIRST ↓
+  .
+  .
+  .
+  A: Preprocess t — binary search per query.
+
+     Step 1: Build a map: char → sorted list of indices where it appears in t.
+       Map<Character, List<Integer>> idx = new HashMap<>();
+       for (int i = 0; i < t.length(); i++)
+           idx.computeIfAbsent(t.charAt(i), x -> new ArrayList<>()).add(i);
+
+     Step 2: For each query s, iterate through s characters.
+       For each character c in s, binary search in idx.get(c) for the
+       smallest index > lastUsedIndex. If found, advance lastUsedIndex.
+       If not found, s is NOT a subsequence.
+
+     Preprocessing: O(n) once for t.
+     Per query: O(m log n) where m = s.length().
+     Total: O(n + Q * m * log n) vs O(Q * n) naive.
+
+     This is a Google interview favourite as a follow-up to LC392.
+*/
+
+// ─── Q12 ─────────────────────────────────────────────────────────────────────
+/*
+  Q: Given a string s, check if it is a palindrome ignoring non-alphanumeric
+     characters and case. Must be O(1) space.
+
+  THINK FIRST ↓
+  .
+  .
+  .
+  A: Two Pointers — opposite ends with in-place junk skipping.
+
+     Convert to lowercase. left = 0, right = s.length()-1.
+     Skip non-alphanumeric with inner while loops BEFORE comparing:
+
+     while (left < right) {
+         while (left < right && !Character.isLetterOrDigit(s.charAt(left)))  left++;
+         while (left < right && !Character.isLetterOrDigit(s.charAt(right))) right--;
+         if (s.charAt(left) != s.charAt(right)) return false;
+         left++;  right--;
+     }
+     return true;
+
+     KEY INSIGHT: Think SKIP first, then COMPARE. Don't clean the string.
+     Cleaning (replaceAll) creates a new O(n) string — violates O(1) space.
+
+     The inner while loops need the i < j guard — if left==right after skipping,
+     we don't want to compare a character with itself (it's always equal — no issue,
+     but is conceptually wrong for an odd-length palindrome's middle char).
+
+     TIME: O(n)   SPACE: O(1)
+*/
+
 // =============================================================================
 //  SECTION 3 : QUICK-FIRE BEHAVIOURAL / FOLLOW-UP QUESTIONS
 // =============================================================================
@@ -390,6 +486,21 @@
   │ After Boyer-Moore:                                                        │
   │   "What if no majority element is guaranteed? How do you verify?"         │
   │   "What if majority is defined as > n/3? How would the algorithm change?" │
+  └───────────────────────────────────────────────────────────────────────────┘
+
+  ┌───────────────────────────────────────────────────────────────────────────┐
+  │ After Two Pointer on two strings (Subsequence):                           │
+  │   "Which pointer is the haystack and which is the needle?"                │
+  │   "What if there are 10^9 queries for the same t?" → preprocess + BSearch │
+  │   "What is the preprocessing approach?" → char → sorted indices → BSearch │
+  │   "Time complexity?" → O(n) preprocess, O(m log n) per query              │
+  └───────────────────────────────────────────────────────────────────────────┘
+
+  ┌───────────────────────────────────────────────────────────────────────────┐
+  │ After Palindrome / Skip-Junk Two Pointer:                                 │
+  │   "Why not just use replaceAll and then check?" → O(n) space, not O(1)   │
+  │   "Why does the inner while need a left<right guard?"                     │
+  │   "What if we have Unicode characters?" → Character.isLetterOrDigit()     │
   └───────────────────────────────────────────────────────────────────────────┘
 */
 

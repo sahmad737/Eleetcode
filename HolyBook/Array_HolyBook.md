@@ -81,7 +81,86 @@ Use these tags consistently in all files and in your solution files.
 
 ---
 
-### [LC 125] Valid Palindrome
+### [LC 392] Is Subsequence
+**Status:** ✅ Done | 13-May-2026 | **Revisit: Yes**
+**Pattern:** P4 — Two Pointers across two strings (slow needle + fast haystack)
+**Difficulty:** Easy | [Problem](http://lcid.cc/392)
+
+**Problem:** Given strings `s` and `t`, return `true` if `s` is a subsequence of `t`.
+All characters of `s` must appear in `t` in the same left-to-right order (not necessarily contiguous).
+
+**My Approach**
+- Counter `k` tracks progress through `s`. Loop `i` through `t`.
+- When `t[i] == s[k]`, increment `k`. When `k == s.length()`, return true.
+
+**Optimal:** TIME: O(n) SPACE: O(1) ✅
+
+**Two Bugs I Had**
+
+| Bug | What I wrote | What it should be |
+|---|---|---|
+| Wrong string scanned | `s.charAt(i)` — scanned pattern against itself | `t.charAt(i)` — scan the haystack |
+| Off-by-one | `i < t.length()-1` — missed last char | `i < t.length()` |
+
+The first bug caused `s` to always match itself — the code returned `true` for any `t`. It worked for `"ahbgdc"` only by accident (answer happens to be true).
+
+**Cleaner Version (no temp variable, no empty guard needed)**
+```java
+public static boolean isSubsequence(String s, String t) {
+    int k = 0;
+    for (int i = 0; i < t.length(); i++) {
+        if (t.charAt(i) == s.charAt(k)) {
+            k++;
+            if (k == s.length()) return true;
+        }
+    }
+    return k == s.length();  // handles empty s: 0==0 → true
+}
+```
+
+**The Two Cursors Mental Model**
+```
+t:  a  h  b  g  d  c     ← i walks this ALWAYS, every step
+s:  a  b  c              ← k walks this ONLY on a match
+```
+- `i` = fast scanner (haystack). Always moves.
+- `k` = slow matcher (needle). Only moves when `t[i] == s[k]`.
+- When `k` reaches `s.length()` → all characters found in order → true.
+
+**Dry Run — `s="abc"`, `t="ahcgdb"` (false)**
+```
+i=0 t[0]='a' == s[0]='a' ✓  k→1
+i=1 t[1]='h' != s[1]='b'  skip
+i=2 t[2]='c' != s[1]='b'  skip
+i=3 t[3]='g' != s[1]='b'  skip
+i=4 t[4]='d' != s[1]='b'  skip
+i=5 t[5]='b' == s[1]='b' ✓  k→2
+Loop ends. k=2 != s.length()=3 → return false ✓
+('c' needed after 'b' but nothing left in t after index 5)
+```
+
+**Edge Cases**
+- `s = ""` — empty string is always a subsequence of anything. `k==s.length()` is `0==0` → true. No guard needed.
+- `t = ""`, `s` non-empty — loop never runs, `k` stays 0, `0 != s.length()` → false. Correct.
+- `s == t` — every character matches in order → true.
+
+**What I Thought vs What I Should Have Used**
+- Mental model was right: one pointer per string
+- Execution mistake: wrote `s.charAt(i)` when I meant `t.charAt(i)`. The variable name `i` was bound to the wrong string conceptually.
+- Lesson: **always label your pointers mentally** — `i` is the `t` cursor, `k` is the `s` cursor. Don't mix them.
+
+**Follow-Up: Multiple Queries (Binary Search approach)**
+- If same `t`, many different `s` strings — preprocess `t` into a map of `char → sorted list of indices`
+- For each char of `s`, binary search for next valid index in `t` (must be > last used index)
+- Preprocessing: O(n) once. Each query: O(m log n) instead of O(m·n) naive
+- For single query: your O(n) O(1) solution is already optimal. Cannot beat reading `t` once.
+
+> **Revisit Needed:** Label your pointers before coding. `i` = haystack cursor, `k` = needle cursor. Write it as a comment first. Also know the binary search follow-up answer.
+
+**Asked In:** Google, Facebook, Amazon (follow-up on multiple queries is a Google favourite)
+
+---
+
 **Status:** ✅ Done | 12-May-2026 | **Revisit: Yes**
 **Pattern:** P4 — Two Pointers, opposite ends + in-loop skip
 **Difficulty:** Medium | [Problem](http://lcid.cc/125)
@@ -665,6 +744,7 @@ for (int i = 0; i < n; i++) {
 | ✅ | LC167 Two Sum II | 12-May-2026 | Revisit: sorted→extremes→steer |
 | ✅ | LC344 Reverse String | 12-May-2026 | No revisit — write WHY not just WHAT |
 | ✅ | LC125 Valid Palindrome | 12-May-2026 | Revisit: think SKIP not CLEAN. Inner while guard. |
+| ✅ | LC392 Is Subsequence | 13-May-2026 | Revisit: label pointers before coding. Know binary search follow-up. |
 | ⬜ | LC15 3Sum | — | Sort + Two Pointers (harder) |
 | ✅ | LC219 Contains Dup II | 15-Apr-2026 | Revisit: window eviction |
 | ⬜ | LC643 Max Average Subarray I | — | Fixed sliding window |
@@ -689,5 +769,5 @@ for (int i = 0; i < n; i++) {
 
 ---
 
-*Last updated: 2026-05-12 | Problems logged: 16 | Next: LC15 3Sum*
+*Last updated: 2026-05-13 | Problems logged: 17 | Next: LC15 3Sum*
 *Companion files: `General_HolyBook.md` · `Array_Interview.md`*
